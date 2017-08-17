@@ -1,7 +1,13 @@
 # Cpups_apps netdata plugin
 
-Cpups_apps is a example plugin for [netdata](https://my-netdata.io) monitoring system.
-It collects statistics of the processor usages as a percentage for the selected applications.
+Cpups_apps is a example plugin for [netdata](https://my-netdata.io) monitoring system.  
+It collects statistics of the processor usages as a percentage for the selected applications.  
+Realized on shell and intended for use with the netdata's [charts.d](https://github.com/firehol/netdata/wiki/General-Info---charts.d) module.
+
+ATTENTION
+> Because of the used mechanism for collection of statistics (through /proc filesystem) it is not possible
+to obtain completely reliable data for cases when controlled process finishes the operation. For tasks where accurate
+accounting of such scenarios is important it is necessary to use the pacct mechanism just as it's used by the [atop](https://www.atoptool.nl/) utility.
 
 ### Install
 
@@ -14,3 +20,7 @@ It collects statistics of the processor usages as a percentage for the selected 
 ### Example
 
 ![Screenshot](cpupc_apps_screenshot.png)
+
+### TODO
+
+- Add get the cpu usage statistics through cgroup's cpuacct controller
