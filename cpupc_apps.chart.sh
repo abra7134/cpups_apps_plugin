@@ -75,7 +75,7 @@ cpupc_apps_get() {
 
 cpupc_apps_create() {
   local app=
-  local divisor=$((cpupc_apps_clock_ticks*cpupc_apps_update_every))
+  local divisor=$((cpupc_apps_clock_ticks))
 
   echo "CHART chartsd_apps.cpupc '' 'Apps CPU percent usage ($((100*cpupc_apps_processors_count))% = $((cpupc_apps_processors_count)) cores)' 'cpu time %' apps apps stacked $((cpupc_apps_priority)) $((cpupc_apps_update_every))"
 
@@ -87,6 +87,8 @@ cpupc_apps_create() {
 
   cpupc_apps_get
 
+  let cpupc_apps_dimensions[seconds]=SECONDS
+
   return 0
 }
 
@@ -96,17 +98,23 @@ cpupc_apps_update() {
   # remember: KEEP IT SIMPLE AND SHORT
   local app
   local utime_amount stime_amount
-
-  echo "BEGIN chartsd_apps.cpupc"
+  local seconds_now seconds_old interval_s
 
   cpupc_apps_get
 
+  let seconds_now=SECONDS
+  let seconds_old=cpupc_apps_dimensions[seconds]
+  let interval_s=$((seconds_now>seconds_old ? seconds_now-seconds_old : 1))
+  let cpupc_apps_dimensions[seconds]=seconds_now
+
+  echo "BEGIN chartsd_apps.cpupc $((interval_s*1000000))"
+
   for app in ${cpupc_apps_apps}
   do
-    let utime_amount=cpupc_apps_dimensions[${app}_utime_2]-cpupc_apps_dimensions[${app}_utime_1]
-    let stime_amount=cpupc_apps_dimensions[${app}_stime_2]-cpupc_apps_dimensions[${app}_stime_1]
-    echo "SET ${app}_user = $((utime_amount > 0 ? utime_amount : 0 ))"
-    echo "SET ${app}_sys = $((stime_amount > 0 ? stime_amount : 0 ))"
+    let utime_amount=(cpupc_apps_dimensions[${app}_utime_2]-cpupc_apps_dimensions[${app}_utime_1])/interval_s
+    let stime_amount=(cpupc_apps_dimensions[${app}_stime_2]-cpupc_apps_dimensions[${app}_stime_1])/interval_s
+    echo "SET ${app}_user = $((utime_amount>0 ? utime_amount : 0 ))"
+    echo "SET ${app}_sys = $((stime_amount>0 ? stime_amount : 0 ))"
   done
 
   echo "END"
