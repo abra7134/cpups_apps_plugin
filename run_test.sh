@@ -1,5 +1,9 @@
 #!/bin/bash
 
+#
+# This script for running pluging in test mode
+#
+
 source ./cpupc_apps.chart.sh
 
 cpupc_apps_apps="firefox netdata"
