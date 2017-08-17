@@ -3,6 +3,7 @@
 source ./cpupc_apps.chart.sh
 
 cpupc_apps_apps="firefox netdata"
+cpupc_apps_check || exit
 cpupc_apps_create
 
 while :;

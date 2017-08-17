@@ -31,7 +31,25 @@ cpupc_apps_check() {
 
   if [ -z "${cpupc_apps_apps}" ]
   then
-    error "manual configuration required: please set cpupc_apps_apps='command1 command2 ...' in ${NETDATA_CONFIG_DIR}/cpupc_apps.conf"
+    error "Manual configuration required: please set cpupc_apps_apps='command1 command2 ...' in ${NETDATA_CONFIG_DIR}/cpupc_apps.conf"
+    return 1
+  fi
+
+  if [ -z "${cpupc_apps_clock_ticks}" ]
+  then
+    error "Can't get CLK_TCK variable by getconf command, please manual check"
+    return 1
+  fi
+
+  if [ -z "${cpupc_apps_processors_count}" ]
+  then
+    error "Can't get the count of installed processors by nproc command, please manual check"
+    return 1
+  fi
+
+  if ! type -p pgrep >/dev/null
+  then
+    error "The required pgrep command is absent, please install by manual"
     return 1
   fi
 
