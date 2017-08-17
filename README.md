@@ -5,16 +5,17 @@ It collects statistics of the processor usages as a percentage for the selected 
 Realized on shell and intended for use with the netdata's [charts.d](https://github.com/firehol/netdata/wiki/General-Info---charts.d) module.
 
 ATTENTION
-> Because of the used mechanism for collection of statistics (through /proc filesystem) it is not possible
-to obtain completely reliable data for cases when controlled process finishes the operation. For tasks where accurate
-accounting of such scenarios is important it is necessary to use the pacct mechanism just as it's used by the [atop](https://www.atoptool.nl/) utility.
+> As the mechanism of statistics collection through /proc filesystem is used, it is not possible
+to obtain completely reliable data for cases when controlled process finishes the operation.
+For tasks where accurate accounting of such scenarios is important it is necessary to use the pacct
+mechanism just as it's used by the [atop](https://www.atoptool.nl/) utility.
 
 ### Install
 
 - [Install](https://github.com/firehol/netdata/wiki/Installation) netdata
 - Copy cpupc_apps.chart.sh to ${NETDATA_INSTALL_PREFIX}/usr/libexec/netdata/charts.d/cpupc_apps.chart.sh
 - Copy cpupc_apps.conf to ${NETDATA_INSTALL_PREFIX}/etc/netdata/charts.d/cpupc_apps.conf
-- Edit the configuration (cpupc_apps.conf) by specifying the needed application
+- Edit the configuration (cpupc_apps.conf) by specifying the needed application for monitoring
 - Restart netdata
 
 ### Example

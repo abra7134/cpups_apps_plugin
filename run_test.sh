@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #
-# This script for running pluging in test mode
+# This script for running plugin in test mode for debug
 #
 
 source ./cpupc_apps.chart.sh

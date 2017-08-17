@@ -148,7 +148,8 @@ cpupc_apps_update() {
   do
     let utime_amount=(cpupc_apps_dimensions[${app}_utime_2]-cpupc_apps_dimensions[${app}_utime_1])/interval_s
     let stime_amount=(cpupc_apps_dimensions[${app}_stime_2]-cpupc_apps_dimensions[${app}_stime_1])/interval_s
-    # In case of completion of work of process - the _amount becomes negative then we return 0 instead
+    # In case of the exited processes - the _amount becomes negative then we return 0 instead
+    # (see ATTENTION section on README.md for details)
     echo "SET ${app}_user = $((utime_amount>0 ? utime_amount : 0 ))"
     echo "SET ${app}_sys = $((stime_amount>0 ? stime_amount : 0 ))"
   done
